@@ -7,6 +7,10 @@ terraform {
   }
 }
 
+provider "azurerm" {
+  features {}
+}
+
 //Criando um resource group - o "Exemple é o nome do RG dentro do Terraform"
 resource "azurerm_resource_group" "RG" {
   name     = "rg-UniversidadeTerraform"
@@ -51,20 +55,19 @@ resource "random_password" "password" {
   override_special = "@#$%!"
 }
 
-resource "azurerm_linux_virtual_machine" "example" {
+resource "azurerm_linux_virtual_machine" "VM01" {
   name                = "vm01-universidadeterraform"
   resource_group_name = azurerm_resource_group.RG.name
   location            = azurerm_resource_group.RG.location
+  admin_username = "adminuser"
+  computer_name = "UniversidadeTerraform"
+  admin_password = random_password.password.result
   size                = "Standard_B2s"
   network_interface_ids = [
     azurerm_network_interface.NIC.id,
   ]
 
- os_profile {
-     computer_name = "UniversidadeTerraform"
-     admin_username = "admin"
-     admin_password = random_password.password.result
-    }
+ 
 
   os_disk {
     caching              = "ReadWrite"
