@@ -61,7 +61,7 @@ resource "azurerm_linux_virtual_machine" "VM01" {
   location            = azurerm_resource_group.RG.location
   admin_username = "adminuser"
   computer_name = "UniversidadeTerraform"
-   disable_password_authentication = false
+  disable_password_authentication = false
   admin_password = random_password.password.result
   size                = "Standard_B2s"
   network_interface_ids = [
