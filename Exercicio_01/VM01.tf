@@ -68,9 +68,7 @@ resource "azurerm_linux_virtual_machine" "VM01" {
     azurerm_network_interface.NIC.id,
   ]
 
- os_profile_linux_config {
-    disable_password_authentication = false
-  }
+ 
 
   os_disk {
     caching              = "ReadWrite"
