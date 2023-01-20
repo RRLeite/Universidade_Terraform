@@ -1,4 +1,12 @@
 
+terraform {
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+    }
+  }
+}
+
 //Criando um resource group - o "Exemple é o nome do RG dentro do Terraform"
 resource "azurerm_resource_group" "RG" {
   name     = "rg-UniversidadeTerraform"
