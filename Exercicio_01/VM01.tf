@@ -96,8 +96,9 @@ resource "azurerm_linux_virtual_machine" "VM01" {
     version   = "latest"
   }
 
+}
 
-  #Outputs
+ #Outputs
 output "STGACCOUNT_Uri" {
   description = "Id do Storage Account"
   value       = azurerm_storage_account.STGACCOUNT.primary_blob_endpoint
@@ -118,6 +119,4 @@ output vm_admin_passsword {
   description = "Login para usuário admin"
   value     = random_password.password.result
   sensitive = false
-}
-
 }
