@@ -55,6 +55,18 @@ resource "random_password" "password" {
   override_special = "@#$%!"
 }
 
+//Criação do STG Account
+
+resource "azurerm_storage_account" "STGACCOUNT" {
+  name                     = "stguniterraforms"
+  resource_group_name      = azurerm_resource_group.RG.name
+  location                 = azurerm_resource_group.RG.location
+  account_tier             = "Standard"
+  account_replication_type = "GRS"
+}
+
+
+//Criação da VM
 resource "azurerm_linux_virtual_machine" "VM01" {
   name                = "vm01-universidadeterraform"
   resource_group_name = azurerm_resource_group.RG.name
@@ -68,7 +80,9 @@ resource "azurerm_linux_virtual_machine" "VM01" {
     azurerm_network_interface.NIC.id,
   ]
 
- 
+ boot_diagnostics {
+    storage_account_uri = azurerm_storage_account.STGACCOUNT.primary_blob_endpoint
+  }
 
   os_disk {
     caching              = "ReadWrite"
@@ -81,4 +95,29 @@ resource "azurerm_linux_virtual_machine" "VM01" {
     sku       = "16.04-LTS"
     version   = "latest"
   }
+
+
+  #Outputs
+output "STGACCOUNT_Uri" {
+  description = "Id do Storage Account"
+  value       = azurerm_storage_account.STGACCOUNT.primary_blob_endpoint
+}
+output "RG_Name" {
+  description = "Nome do Resource Group"
+  value       = azurerm_resource_group.RG.name
+}
+output "RG_Location" {
+  description = "Location do Resource Group"
+  value       = azurerm_resource_group.RG.location
+}
+output "SNET_Id" {
+    description = "Id da SubNet"
+    value = azurerm_subnet.SNET.id
+}
+output vm_admin_passsword {
+  description = "Login para usuário admin"
+  value     = random_password.password.result
+  sensitive = false
+}
+
 }
